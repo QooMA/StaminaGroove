@@ -1,18 +1,36 @@
 var express = require('express');
 var router = express.Router();
-
-const aBrighterDay = "A Brighter Day";
-const cirqueDuZeppelin = "Cirque du Zeppelin";
-const hard = "HARD";
-const expert = "EXPERT";
+var models = require('../models');
 
 /* GET song list. */
 router.get('/songs', function(req, res) {
-  const songlist = [
-    {id: 1, name: aBrighterDay, package: cirqueDuZeppelin, difficult: hard, rating: 11, bpm: 155, total16th: 16},
-    {id: 2, name: aBrighterDay, package: cirqueDuZeppelin, difficult: expert, rating: 12, bpm: 155, total16th: 32},
-  ];
-  res.json(songlist);
+  models.charts.findAll({
+    // required: true=INNER JOIN, false=LEFT OUTER JOIN
+    include: [{
+      model: models.songs,
+      required: false,
+      // required: true=INNER JOIN, false=LEFT OUTER JOIN
+      include: [{
+        model: models.packages,
+        required: false,
+      }]
+    }]
+  }).then(results => {
+    let songs = []
+    for (const result of results) {
+      const song = {
+        "id": result.id,
+        "song": result.song.name,
+        "package": result.song.package.name,
+        "chart_type_id": result.chart_type_id,
+        "rating": result.rating,
+        "bpm": result.song.bpm,
+        "total_of_16th": result.total_of_16th,
+      }
+      songs.push(song);
+    }
+    res.json(songs);
+  });
 });
 
 module.exports = router;

@@ -9,6 +9,8 @@ module.exports = (sequelize, DataTypes) => {
   });
   songs.associate = function(models) {
     // associations can be defined here
+    songs.belongsTo(models.packages, {foreignKey: 'package_id'});
+    songs.hasMany(models.charts, {foreignKey: 'song_id'});
   };
   return songs;
 };

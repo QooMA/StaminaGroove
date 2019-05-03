@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   packages.associate = function(models) {
     // associations can be defined here
+    packages.hasMany(models.songs, {foreignKey: 'package_id'});
   };
   return packages;
 };
