@@ -1,0 +1,10 @@
+{
+  "development": {
+    "//": "DATABASE_URL: postgres://[username]:[password]@[host]:[port]/[database]",
+    "use_env_variable": "DATABASE_URL"
+  },
+  "production": {
+    "//": "DATABASE_URL: postgres://[username]:[password]@[host]:[port]/[database]",
+    "use_env_variable": "DATABASE_URL"
+  }
+}
